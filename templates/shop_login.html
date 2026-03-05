@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ shop[0] if shop and shop[0] else "VENDIX SHOP" }} 로그인</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.ico') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(56, 189, 248, 0.2), transparent 26%),
+        radial-gradient(circle at 85% 20%, rgba(37, 99, 235, 0.2), transparent 24%),
+        linear-gradient(160deg, #eff6ff 0%, #f8fbff 50%, #eaf2ff 100%);
+      font-family: "Segoe UI", "Noto Sans KR", sans-serif;
+      color: #0f172a;
+    }
+    .shell {
+      width: min(520px, 92vw);
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid #dbe4f0;
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.15);
+    }
+    h1 {
+      margin: 0 0 4px;
+      font-size: 30px;
+      font-weight: 800;
+    }
+    .sub {
+      margin: 0 0 18px;
+      color: #475569;
+      font-size: 14px;
+    }
+    .input {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 13px 14px;
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: #0f172a;
+      background: #ffffff;
+    }
+    .btn {
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      padding: 13px 14px;
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
+      color: #ffffff;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+    .link {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 14px;
+      color: #334155;
+    }
+    .link a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 700;
+    }
+  </style>
+  <script>
+    function signin(serverId) {
+      $.post("/" + serverId + "/auth/signin", {
+        member_id: document.getElementById("member_id").value,
+        member_pw: document.getElementById("member_pw").value
+      }).done(function (res) {
+        if (res === "ok") {
+          window.location.href = "/" + serverId;
+        } else {
+          Swal.fire("로그인 실패", res, "error");
+        }
+      });
+    }
+  </script>
+</head>
+<body>
+  <main class="shell">
+    <h1>{{ shop[0] if shop and shop[0] else "VENDIX SHOP" }}</h1>
+    <p class="sub">상점 로그인</p>
+    <input id="member_id" class="input" type="text" placeholder="ID">
+    <input id="member_pw" class="input" type="password" placeholder="비밀번호">
+    <button class="btn" type="button" onclick="signin('{{server_id}}')">로그인</button>
+    <div class="link">계정이 없다면 <a href="/{{server_id}}/signup">회원가입</a></div>
+  </main>
+</body>
+</html>

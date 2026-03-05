@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ shop[0] if shop and shop[0] else "VENDIX SHOP" }}</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.ico') }}" />
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+      color: #0f172a;
+      font-family: "Segoe UI", "Noto Sans KR", sans-serif;
+    }
+    .wrap {
+      width: min(1140px, 94vw);
+      margin: 28px auto 56px;
+    }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .title {
+      font-size: clamp(26px, 4vw, 42px);
+      margin: 0;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+    .badge {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      color: #1e293b;
+      font-size: 13px;
+    }
+    .logout {
+      text-decoration: none;
+      color: #ffffff;
+      background: #dc2626;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+    .product {
+      background: #ffffff;
+      border: 1px solid #dbe4f0;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+    }
+    .thumb {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      background: linear-gradient(135deg, #bfdbfe, #dbeafe);
+      display: block;
+    }
+    .body {
+      padding: 14px;
+    }
+    .name {
+      margin: 0 0 8px;
+      font-size: 20px;
+      font-weight: 800;
+    }
+    .desc {
+      margin: 0 0 10px;
+      color: #475569;
+      min-height: 40px;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .price {
+      color: #1d4ed8;
+      font-weight: 800;
+      font-size: 20px;
+    }
+    .stock {
+      color: #0f766e;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .empty {
+      background: #ffffff;
+      border: 1px dashed #cbd5e1;
+      border-radius: 14px;
+      padding: 30px;
+      text-align: center;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1 class="title">{{ shop[0] if shop and shop[0] else "VENDIX SHOP" }}</h1>
+        <span class="badge">{{ logged_member }} 님 로그인됨</span>
+      </div>
+      <a class="logout" href="/{{server_id}}/auth/logout">로그아웃</a>
+    </div>
+
+    {% if products %}
+    <section class="products">
+      {% for product in products %}
+      <article class="product">
+        {% if product[4] %}
+        <img class="thumb" src="{{ product[4] }}" alt="{{ product[0] }}">
+        {% else %}
+        <div class="thumb"></div>
+        {% endif %}
+        <div class="body">
+          <h2 class="name">{{ product[0] }}</h2>
+          <p class="desc">{{ product[3] if product|length > 3 else "" }}</p>
+          <div class="meta">
+            <span class="price">{{ product[1] }}원</span>
+            <span class="stock">재고 {{ product[2].split('\n')|length if product[2] else 0 }}개</span>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </section>
+    {% else %}
+    <div class="empty">등록된 제품이 없습니다.</div>
+    {% endif %}
+  </div>
+</body>
+</html>

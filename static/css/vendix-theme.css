@@ -1,0 +1,186 @@
+:root {
+  --vendix-bg: #eef4ff;
+  --vendix-surface: rgba(255, 255, 255, 0.86);
+  --vendix-surface-strong: #ffffff;
+  --vendix-card: rgba(255, 255, 255, 0.92);
+  --vendix-border: rgba(15, 23, 42, 0.08);
+  --vendix-text: #101828;
+  --vendix-text-muted: #475467;
+  --vendix-accent: #2f6bff;
+  --vendix-accent-2: #00aa8d;
+  --vendix-danger: #e45555;
+  --vendix-shadow: 0 30px 80px rgba(36, 58, 107, 0.12);
+  --vendix-table-head: rgba(47, 107, 255, 0.12);
+  --vendix-table-row: rgba(17, 24, 39, 0.03);
+}
+
+body[data-theme="light"] {
+  --vendix-bg: #eef4ff;
+  --vendix-surface: rgba(255, 255, 255, 0.86);
+  --vendix-surface-strong: #ffffff;
+  --vendix-card: rgba(255, 255, 255, 0.92);
+  --vendix-border: rgba(15, 23, 42, 0.08);
+  --vendix-text: #101828;
+  --vendix-text-muted: #475467;
+  --vendix-accent: #2f6bff;
+  --vendix-accent-2: #00aa8d;
+  --vendix-danger: #e45555;
+  --vendix-shadow: 0 30px 80px rgba(36, 58, 107, 0.12);
+  --vendix-table-head: rgba(47, 107, 255, 0.12);
+  --vendix-table-row: rgba(17, 24, 39, 0.03);
+}
+
+body.vendix-panel {
+  background:
+    radial-gradient(circle at top left, rgba(79, 124, 255, 0.12), transparent 30%),
+    radial-gradient(circle at right 15%, rgba(20, 200, 168, 0.08), transparent 24%),
+    linear-gradient(180deg, #f6f9ff, #edf3ff);
+  background-color: var(--vendix-bg) !important;
+  color: var(--vendix-text);
+  min-height: 100vh;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+body.vendix-panel a,
+body.vendix-panel label,
+body.vendix-panel h1,
+body.vendix-panel h2,
+body.vendix-panel h3,
+body.vendix-panel h4,
+body.vendix-panel p,
+body.vendix-panel span,
+body.vendix-panel td,
+body.vendix-panel th,
+body.vendix-panel div {
+  color: inherit !important;
+}
+
+body.vendix-panel [style*="color: whitesmoke"],
+body.vendix-panel [style*="color: white"] {
+  color: var(--vendix-text) !important;
+}
+
+body.vendix-panel .navbar {
+  background: var(--vendix-surface) !important;
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--vendix-border);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+}
+
+body.vendix-panel .navbar-brand,
+body.vendix-panel .nav-link {
+  color: var(--vendix-text) !important;
+}
+
+body.vendix-panel .navbar-brand {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+body.vendix-panel #logout {
+  color: var(--vendix-danger) !important;
+}
+
+body.vendix-panel .container.mt-5,
+body.vendix-panel .container-fluid > div[style*="padding:20px"] {
+  background: var(--vendix-card) !important;
+  border: 1px solid var(--vendix-border);
+  border-radius: 28px;
+  box-shadow: var(--vendix-shadow);
+}
+
+body.vendix-panel .container.mt-5 {
+  padding: 20px;
+}
+
+body.vendix-panel .card,
+body.vendix-panel .card-header,
+body.vendix-panel .card-body {
+  background: transparent !important;
+  color: var(--vendix-text) !important;
+  border-color: var(--vendix-border) !important;
+}
+
+body.vendix-panel .card {
+  background: var(--vendix-surface) !important;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+body.vendix-panel .card-header {
+  background: linear-gradient(135deg, rgba(79, 124, 255, 0.18), rgba(20, 200, 168, 0.14)) !important;
+  font-weight: 700;
+}
+
+body.vendix-panel .form-control,
+body.vendix-panel textarea.form-control,
+body.vendix-panel select {
+  background: var(--vendix-surface-strong) !important;
+  color: var(--vendix-text) !important;
+  border: 1px solid var(--vendix-border) !important;
+  border-radius: 14px !important;
+}
+
+body.vendix-panel .btn-primary {
+  background: linear-gradient(135deg, var(--vendix-accent), #7e8dff) !important;
+  border: none !important;
+  box-shadow: 0 16px 32px rgba(79, 124, 255, 0.22);
+}
+
+body.vendix-panel .btn-danger {
+  background: linear-gradient(135deg, #ff6b6b, #ff8d6b) !important;
+  border: none !important;
+}
+
+body.vendix-panel table.dataTable,
+body.vendix-panel .table {
+  color: var(--vendix-text) !important;
+  border-color: var(--vendix-border) !important;
+  margin-top: 8px !important;
+}
+
+body.vendix-panel table.dataTable thead th,
+body.vendix-panel .table thead th {
+  background: var(--vendix-table-head) !important;
+  color: var(--vendix-text) !important;
+  border-bottom: 1px solid var(--vendix-border) !important;
+  font-weight: 800;
+}
+
+body.vendix-panel table.dataTable tbody tr,
+body.vendix-panel .table tbody tr {
+  background: var(--vendix-table-row) !important;
+}
+
+body.vendix-panel table.dataTable tbody td,
+body.vendix-panel .table tbody td {
+  color: var(--vendix-text) !important;
+  border-color: var(--vendix-border) !important;
+}
+
+body.vendix-panel .dataTables_wrapper .dataTables_length,
+body.vendix-panel .dataTables_wrapper .dataTables_filter,
+body.vendix-panel .dataTables_wrapper .dataTables_info,
+body.vendix-panel .dataTables_wrapper .dataTables_paginate {
+  color: var(--vendix-text) !important;
+}
+
+body.vendix-panel .dataTables_wrapper input,
+body.vendix-panel .dataTables_wrapper select {
+  background: var(--vendix-surface-strong);
+  color: var(--vendix-text);
+  border: 1px solid var(--vendix-border);
+  border-radius: 12px;
+  padding: 6px 10px;
+}
+
+body.vendix-panel .dataTables_wrapper .dataTables_paginate .paginate_button,
+body.vendix-panel .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  color: var(--vendix-text) !important;
+}
+
+body.vendix-panel .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: transparent !important;
+  border-color: transparent !important;
+}

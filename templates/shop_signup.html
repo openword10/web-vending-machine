@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ shop[0] if shop and shop[0] else "VENDIX SHOP" }} 회원가입</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.ico') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 10% 18%, rgba(20, 184, 166, 0.18), transparent 24%),
+        radial-gradient(circle at 80% 10%, rgba(59, 130, 246, 0.2), transparent 26%),
+        linear-gradient(170deg, #eff6ff 0%, #f8fbff 60%, #eaf4ff 100%);
+      font-family: "Segoe UI", "Noto Sans KR", sans-serif;
+      color: #0f172a;
+    }
+    .shell {
+      width: min(560px, 92vw);
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid #dbe4f0;
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.15);
+    }
+    h1 {
+      margin: 0 0 4px;
+      font-size: 30px;
+      font-weight: 800;
+    }
+    .sub {
+      margin: 0 0 18px;
+      color: #475569;
+      font-size: 14px;
+    }
+    .input {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 13px 14px;
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: #0f172a;
+      background: #ffffff;
+    }
+    .btn {
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      padding: 13px 14px;
+      background: linear-gradient(135deg, #0f766e, #0ea5e9);
+      color: #ffffff;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+    .link {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 14px;
+      color: #334155;
+    }
+    .link a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 700;
+    }
+  </style>
+  <script>
+    function signup(serverId) {
+      $.post("/" + serverId + "/auth/signup", {
+        member_id: document.getElementById("member_id").value,
+        member_pw: document.getElementById("member_pw").value,
+        discord_id: document.getElementById("discord_id").value,
+        gmail: document.getElementById("gmail").value
+      }).done(function (res) {
+        if (res === "ok") {
+          window.location.href = "/" + serverId;
+        } else {
+          Swal.fire("회원가입 실패", res, "error");
+        }
+      });
+    }
+  </script>
+</head>
+<body>
+  <main class="shell">
+    <h1>{{ shop[0] if shop and shop[0] else "VENDIX SHOP" }}</h1>
+    <p class="sub">상점 회원가입</p>
+    <input id="member_id" class="input" type="text" placeholder="ID">
+    <input id="member_pw" class="input" type="password" placeholder="비밀번호">
+    <input id="discord_id" class="input" type="text" placeholder="디스코드 아이디">
+    <input id="gmail" class="input" type="email" placeholder="GMAIL">
+    <button class="btn" type="button" onclick="signup('{{server_id}}')">회원가입</button>
+    <div class="link">이미 계정이 있다면 <a href="/{{server_id}}/login">로그인</a></div>
+  </main>
+</body>
+</html>
