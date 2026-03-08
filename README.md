@@ -151,7 +151,7 @@
 ## 6-1. 가상환경/의존성
 
 ```powershell
-cd "C:\Users\koyto\OneDrive\바탕 화면\Venex-main"
+cd "C:\Users\사용자\OneDrive\바탕 화면\web-vending-machine"
 python -m venv .venv
 .\.venv\Scripts\activate
 pip install -r requirements.txt
