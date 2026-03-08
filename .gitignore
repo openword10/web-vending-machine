@@ -1,1 +1,7 @@
 config.py
+.venv/
+__pycache__/
+.pytest_cache/
+backups/
+*.pyc
+static/uploads/

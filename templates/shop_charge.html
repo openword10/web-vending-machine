@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ shop[0] if shop and shop[0] else "VENDIX SHOP" }} - 충전하기</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.ico') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <style>
+    body { margin:0; font-family:"Segoe UI","Noto Sans KR",sans-serif; background:linear-gradient(180deg,#f8fbff 0%,#eef4ff 100%); color:#0f172a; word-break: keep-all; overflow-wrap: anywhere; }
+    .wrap { width:min(760px, 92vw); margin:30px auto; }
+    .card { background:#fff; border:1px solid #dbe4f0; border-radius:16px; box-shadow:0 10px 26px rgba(15,23,42,.08); padding:20px; }
+    .top { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+    .btn { border:0; border-radius:10px; padding:10px 14px; font-weight:700; cursor:pointer; text-decoration:none; color:#fff; }
+    .btn-back { background:#475569; }
+    .btn-submit { background:#22c55e; width:100%; margin-top:10px; }
+    .row { margin-bottom:10px; }
+    .label { display:block; margin-bottom:6px; font-weight:700; color:#334155; }
+    .input { width:100%; box-sizing:border-box; border:1px solid #cbd5e1; border-radius:10px; padding:11px 12px; font-size:14px; }
+    .hint { font-size:13px; color:#475569; margin-bottom:10px; }
+    .money { background:#dbeafe; color:#1e40af; border-radius:999px; padding:8px 12px; font-weight:700; font-size:13px; }
+    @media (max-width: 768px) {
+      .wrap { width:94vw; margin:14px auto; }
+      .card { padding:14px; border-radius:12px; }
+      .top { flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+      .top h1 { font-size:21px !important; }
+      .money { font-size:12px; padding:7px 10px; }
+      .label { font-size:13px; }
+      .input { font-size:13px; padding:10px 10px; }
+      .hint { font-size:12px; }
+      .btn { font-size:13px; padding:9px 12px; }
+    }
+  </style>
+  <script>
+    function submitCharge(serverId) {
+      const fileEl = document.querySelector('input[name="receipt_file"]');
+      const urlEl = document.querySelector('input[name="image_url"]');
+      const hasFile = fileEl && fileEl.files && fileEl.files.length > 0;
+      const hasUrl = urlEl && String(urlEl.value || "").trim() !== "";
+      if (!hasFile && !hasUrl) {
+        Swal.fire("실패", "입금 이미지를 업로드하거나 이미지 URL을 입력해주세요.", "error");
+        return;
+      }
+      const fd = new FormData(document.getElementById("charge-form"));
+      $.ajax({
+        url: "/" + serverId + "/charge",
+        type: "POST",
+        data: fd,
+        processData: false,
+        contentType: false
+      }).done(function(res){
+        if (res === "ok") {
+          Swal.fire("완료", "충전신청이 완료되었습니다.", "success").then(function(){
+            window.location.href = "/" + serverId;
+          });
+        } else {
+          Swal.fire("실패", res, "error");
+        }
+      });
+    }
+  </script>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="top">
+        <h1 style="margin:0; font-size:26px;">충전 신청</h1>
+        <span class="money">현재 보유금액 {{ member_balance }}원</span>
+      </div>
+
+      <p class="hint">입금 후 아래 내용을 입력해 신청해주세요. 관리자가 확인 후 충전 승인합니다.</p>
+      <p class="hint"><strong>입금 계좌번호:</strong> {{ bank_account if bank_account else "관리자가 아직 계좌번호를 설정하지 않았습니다." }}</p>
+      <p class="hint"><strong>은행:</strong> {{ bank_name if bank_name else "관리자가 아직 은행을 설정하지 않았습니다." }}</p>
+      <p class="hint"><strong>예금주:</strong> {{ bank_owner if bank_owner else "관리자가 아직 예금주를 설정하지 않았습니다." }}</p>
+
+      <form id="charge-form" onsubmit="return false;">
+        <div class="row">
+          <label class="label">충전 금액</label>
+          <input class="input" name="amount" placeholder="예: 10000">
+        </div>
+        <div class="row">
+          <label class="label">입금자명</label>
+          <input class="input" name="depositor" placeholder="입금자명">
+        </div>
+        <div class="row">
+          <label class="label">입금 사진 보내기 (업로드)</label>
+          <input class="input" type="file" name="receipt_file" accept=".png,.jpg,.jpeg,.webp,.gif">
+        </div>
+        <div class="row">
+          <label class="label">입금 사진 URL (선택)</label>
+          <input class="input" name="image_url" placeholder="https://...">
+        </div>
+        <button class="btn btn-submit" type="button" onclick="submitCharge('{{server_id}}')">완료</button>
+      </form>
+
+      <div style="margin-top:10px;">
+        <a class="btn btn-back" href="/{{server_id}}">상점으로 돌아가기</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

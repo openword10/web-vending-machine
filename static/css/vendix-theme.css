@@ -78,8 +78,31 @@ body.vendix-panel .navbar-brand {
   text-transform: uppercase;
 }
 
+/* Top menu: hide icon drawings and emphasize text spacing */
+body.vendix-panel .navbar .nav-link svg,
+body.vendix-panel .navbar .navbar-brand svg {
+  display: none !important;
+}
+
+body.vendix-panel .navbar .nav-link {
+  font-size: 1.18rem !important;
+  font-weight: 800 !important;
+  padding: 0.62rem 0.9rem !important;
+  margin-right: 0.25rem !important;
+  letter-spacing: 0.01em;
+}
+
+body.vendix-panel .navbar .navbar-brand {
+  font-size: 1.3rem !important;
+}
+
 body.vendix-panel #logout {
   color: var(--vendix-danger) !important;
+}
+
+body.vendix-panel .navbar .nav-link[href*="discord.gg"],
+body.vendix-panel .navbar .nav-link[href*="/discord"] {
+  color: #3b82f6 !important;
 }
 
 body.vendix-panel .container.mt-5,
@@ -183,4 +206,46 @@ body.vendix-panel .dataTables_wrapper .dataTables_paginate .paginate_button.curr
 body.vendix-panel .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
   background: transparent !important;
   border-color: transparent !important;
+}
+
+@media (max-width: 768px) {
+  body.vendix-panel {
+    font-size: 14px;
+  }
+
+  body.vendix-panel .navbar {
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+  }
+
+  body.vendix-panel .navbar .navbar-brand {
+    font-size: 1.05rem !important;
+  }
+
+  body.vendix-panel .navbar .nav-link {
+    font-size: 0.95rem !important;
+    padding: 0.4rem 0.5rem !important;
+    margin-right: 0 !important;
+    white-space: nowrap;
+  }
+
+  body.vendix-panel .container.mt-5,
+  body.vendix-panel .container-fluid > div[style*="padding:20px"] {
+    border-radius: 16px;
+    padding: 12px !important;
+  }
+
+  body.vendix-panel table.dataTable,
+  body.vendix-panel .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  body.vendix-panel .floating-actions {
+    right: 10px;
+    bottom: 10px;
+    gap: 8px;
+    padding: 8px 9px;
+  }
 }

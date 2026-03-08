@@ -153,15 +153,34 @@
             transition: background-color 5000s ease-in-out 0s;
         }
 
-        .pw-toggle {
-            margin-top: -4px;
-            margin-bottom: 8px;
-            font-size: 13px;
+        .password-wrap {
+            position: relative;
+        }
+
+        .password-wrap input {
+            padding-right: 76px;
+        }
+
+        .pw-inline-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 1px solid rgba(15, 23, 42, 0.12);
+            border-radius: 10px;
+            width: 42px;
+            height: 34px;
+            font-size: 18px;
+            font-weight: 700;
             color: #334155;
-            display: inline-flex;
-            gap: 8px;
-            align-items: center;
-            user-select: none;
+            background: #ffffff;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+        }
+
+        .pw-inline-btn:hover {
+            background: #f8fafc;
         }
 
         .login-btn {
@@ -228,10 +247,10 @@
                 </div>
                 <div class="field">
                     <label for="login-pw">비밀번호</label>
-                    <input id="login-pw" type="password" name="pw" class="pw" placeholder="웹패널 비밀번호">
-                    <label class="pw-toggle">
-                        <input type="checkbox" id="togglePw"> 비밀번호 표시
-                    </label>
+                    <div class="password-wrap">
+                        <input id="login-pw" type="password" name="pw" class="pw" placeholder="웹패널 비밀번호">
+                        <button type="button" id="togglePw" class="pw-inline-btn">🙈</button>
+                    </div>
                 </div>
                 <button type="submit" class="login-btn">LOGIN</button>
             </form>
@@ -244,8 +263,10 @@
             var toggle = document.getElementById("togglePw");
             var pwInput = document.getElementById("login-pw");
             if (toggle && pwInput) {
-                toggle.addEventListener("change", function () {
-                    pwInput.type = this.checked ? "text" : "password";
+                toggle.addEventListener("click", function () {
+                    var show = pwInput.type === "password";
+                    pwInput.type = show ? "text" : "password";
+                    toggle.textContent = show ? "👁" : "🙈";
                 });
             }
         });

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ shop[0] if shop and shop[0] else "VENDIX SHOP" }} - 구매 결과</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.ico') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <style>
+    body { margin:0; font-family:"Segoe UI","Noto Sans KR",sans-serif; background:linear-gradient(180deg,#f8fbff,#eef4ff); color:#0f172a; word-break: keep-all; overflow-wrap: anywhere; }
+    .wrap { width:min(860px, 92vw); margin:32px auto; }
+    .card { background:#fff; border:1px solid #dbe4f0; border-radius:16px; box-shadow:0 10px 26px rgba(15,23,42,.08); padding:20px; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:14px; }
+    .btn { border:0; border-radius:10px; padding:10px 14px; font-weight:700; cursor:pointer; text-decoration:none; color:#fff; display:inline-block; }
+    .btn-copy { background:#2563eb; }
+    .btn-back { background:#475569; }
+    .box {
+      width:100%; box-sizing:border-box; border:1px solid #cbd5e1; border-radius:10px; background:#f8fafc;
+      min-height:220px; padding:12px; white-space:pre-wrap; font-family:Consolas, monospace; font-size:14px;
+    }
+    .meta { color:#475569; font-size:14px; margin-bottom:10px; }
+    @media (max-width: 768px) {
+      .wrap { width:94vw; margin:14px auto; }
+      .card { padding:14px; border-radius:12px; }
+      .top { flex-wrap:wrap; gap:8px; }
+      .top h1 { font-size:21px !important; }
+      .btn { font-size:12px; padding:8px 10px; }
+      .meta { font-size:12px; line-height:1.45; }
+      .box { min-height:180px; font-size:12px; padding:10px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="top">
+        <h1 style="margin:0; font-size:24px;">구매 완료</h1>
+        <div>
+          <a class="btn btn-back" href="/{{server_id}}/orders">구매내역</a>
+          <a class="btn btn-back" href="/{{server_id}}">상점으로</a>
+        </div>
+      </div>
+      <div class="meta">
+        주문번호: {{ order[0] }} | 상품: {{ order[2] }} | 수량: {{ order[3] }} | 시간: {{ order[5] }}
+      </div>
+      <textarea id="order-items" class="box" readonly>{% for item in items %}{{ item }}{% if not loop.last %}&#10;{% endif %}{% endfor %}</textarea>
+      <div style="margin-top:10px;">
+        <button class="btn btn-copy" onclick="copyItems()">복사하기</button>
+      </div>
+    </section>
+  </main>
+  <script>
+    function copyItems() {
+      const ta = document.getElementById("order-items");
+      ta.select();
+      ta.setSelectionRange(0, 999999);
+      const ok = document.execCommand("copy");
+      if (ok) {
+        Swal.fire("완료", "복사되었습니다.", "success");
+      } else {
+        Swal.fire("실패", "복사에 실패했습니다.", "error");
+      }
+    }
+  </script>
+</body>
+</html>

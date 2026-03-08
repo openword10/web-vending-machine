@@ -45,13 +45,17 @@ def create(license, guild_id):
                     logo_url TEXT,
                     banner_url TEXT,
                     theme_color TEXT,
-                    is_public INTEGER
+                    is_public INTEGER,
+                    bank_account TEXT,
+                    bank_owner TEXT,
+                    bank_name TEXT,
+                    auto_charge_approve INTEGER
                 );
                 """)
     con.commit()
     cur.execute(
-        "INSERT INTO shop VALUES(?, ?, ?, ?, ?, ?, ?)",
-        ("VENDIX SHOP", str(guild_id), "", "", "", "#4f7cff", 0)
+        "INSERT INTO shop VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        ("VENDIX SHOP", str(guild_id), "", "", "", "#4f7cff", 0, "", "", "", 0)
     )
     con.commit()
     cur.execute("""

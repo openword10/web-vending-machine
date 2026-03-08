@@ -1,0 +1,8 @@
+Flask>=3.0,<4.0
+nextcord>=2.6.0
+discord-webhook>=1.4.1
+Pillow>=10.0.0
+numpy>=1.26.0
+easyocr>=1.7.2
+waitress>=3.0.0; platform_system == "Windows"
+gunicorn>=21.2.0; platform_system != "Windows"

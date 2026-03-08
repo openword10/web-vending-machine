@@ -93,10 +93,13 @@
           confirmButtonColor: '#009900'
         }).then((result) => {
           if (result.isConfirmed) {
+            const fd = new FormData(document.getElementById("manage-form"));
             $.ajax({
               url: "/setting",
               type: "post",
-              data: $("form").serialize(),
+              data: fd,
+              processData: false,
+              contentType: false,
             }).done(function (data) {
               if (data == "ok") {
                 Swal.fire({
@@ -212,6 +215,18 @@
       box-shadow: 0 14px 28px rgba(22, 163, 74, 0.34);
       filter: brightness(1.04);
     }
+
+    @media (max-width: 768px) {
+      a {
+        font-size: 14px;
+      }
+
+      .floating-actions {
+        right: 10px;
+        bottom: 10px;
+        padding: 8px 9px;
+      }
+    }
   </style>
 
   <script src="{{ url_for('static', filename='js/vendix-theme.js') }}"></script>
@@ -276,6 +291,13 @@
               </svg>&nbsp;충전 로그</a>
           </li>&nbsp;&nbsp;
           <li class="nav-item">
+            <a class="nav-link active" href="/managereq" style="color: whitesmoke;"><svg
+                xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-credit-card"
+                viewBox="0 0 16 16">
+                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1H0V4zm0 3v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7H0zm3 2h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1z"/>
+              </svg>&nbsp;충전 신청 관리</a>
+          </li>&nbsp;&nbsp;
+          <li class="nav-item">
             <a class="nav-link active" href="/license" style="color: whitesmoke;"><svg
                 xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
                 class="bi bi-credit-card-2-front-fill" viewBox="0 0 16 16">
@@ -315,7 +337,7 @@
         <button class="btn btn-apply-green" onclick="manage();">적용하기</button>
         <button class="btn btn-danger" onclick="cancel_button();">취소하기</button>
       </div>
-      <form name="form">
+      <form id="manage-form" name="form" enctype="multipart/form-data">
         <div>
           <div class="form-group">
             <h2 style="color: white; font-family: 'KOHIBaeumOTF'; font-size: 35px;">기본 설정</h2><br>
@@ -335,9 +357,20 @@
                       <input class="form-control" value="{{info[0]}}" readonly>
                     </div>
                     <div class="col-md-6" style="padding-top : 10px;">
+                      <label style="color: #111827;">로고 이미지 URL</label>
+                      <input class="form-control" name="shop_logo_url" placeholder="https://..." value="{{shop[3] if shop|length > 3 else ''}}">
+                    </div>
+                    <div class="col-md-6" style="padding-top : 10px;">
+                      <label style="color: #111827;">로고 이미지 파일 업로드</label>
+                      <input class="form-control" type="file" name="shop_logo_file" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif">
+                    </div>
+                    <div class="col-md-6" style="padding-top : 10px;">
                       <label style="color: #111827;">공개 여부 0 = 비공개 / 1 = 공개</label>
-                      <input class="form-control" name="shop_public" placeholder="0" value="{{shop[6]}}">
+                      <input class="form-control" name="shop_public" placeholder="0" value="{{shop[6]}}" {% if license_expired %}readonly{% endif %}>
                       <input type="hidden" name="shop_public_original" value="{{shop[6]}}">
+                      {% if license_expired %}
+                      <small style="color:#dc2626; font-weight:700;">라이센스가 만료되어 공개여부는 0으로 고정됩니다.</small>
+                      {% endif %}
                     </div>
                     <div class="col-md-12" style="padding-top : 14px;">
                       <a class="btn btn-outline-primary" href="{{shop_url}}" target="_blank">샵웹사이트 가기</a>
@@ -379,7 +412,17 @@
                     <div class="col-md-6" style="padding-top : 10px;">
                       <label for="exampleInputEmail1" style="color: #111827;">계좌번호</label>
                       <input class="form-control" id="bankname" placeholder="계좌번호" name="bankname"
-                        value="{{info[7]}}">
+                        value="{{shop[7] if shop|length > 7 else ''}}">
+                    </div>
+                    <div class="col-md-6" style="padding-top : 10px;">
+                      <label for="bankbank" style="color: #111827;">은행</label>
+                      <input class="form-control" id="bankbank" placeholder="은행" name="bankbank"
+                        value="{{shop[9] if shop|length > 9 else ''}}">
+                    </div>
+                    <div class="col-md-6" style="padding-top : 10px;">
+                      <label for="bankowner" style="color: #111827;">예금주</label>
+                      <input class="form-control" id="bankowner" placeholder="예금주" name="bankowner"
+                        value="{{shop[8] if shop|length > 8 else ''}}">
                     </div>
                   </div>
                 </div>

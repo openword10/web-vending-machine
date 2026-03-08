@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ shop[0] if shop and shop[0] else "VENDIX SHOP" }} - 구매내역</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.ico') }}" />
+  <style>
+    body { margin:0; font-family:"Segoe UI","Noto Sans KR",sans-serif; background:linear-gradient(180deg,#f8fbff,#eef4ff); color:#0f172a; word-break: keep-all; overflow-wrap: anywhere; }
+    .wrap { width:min(980px, 94vw); margin:32px auto; }
+    .card { background:#fff; border:1px solid #dbe4f0; border-radius:16px; box-shadow:0 10px 26px rgba(15,23,42,.08); padding:20px; }
+    .top { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+    .btn { border:0; border-radius:10px; padding:10px 14px; font-weight:700; text-decoration:none; color:#fff; background:#475569; }
+    .table-wrap { width:100%; overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { border-bottom:1px solid #e2e8f0; padding:12px 8px; text-align:left; }
+    th { color:#334155; font-size:13px; }
+    .go { background:#2563eb; color:#fff; border:0; border-radius:8px; padding:7px 10px; text-decoration:none; font-weight:700; }
+    @media (max-width: 768px) {
+      .wrap { width:94vw; margin:14px auto; }
+      .card { padding:14px; border-radius:12px; }
+      .top { flex-wrap:wrap; gap:8px; }
+      .top h1 { font-size:21px !important; }
+      .btn { font-size:12px; padding:8px 10px; }
+      table { min-width: 620px; }
+      th, td { padding:9px 6px; font-size:12px; white-space: nowrap; }
+      .go { font-size:12px; padding:6px 8px; white-space: nowrap; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="top">
+        <h1 style="margin:0; font-size:24px;">구매내역</h1>
+        <a class="btn" href="/{{server_id}}">상점으로 돌아가기</a>
+      </div>
+      <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>주문번호</th>
+            <th>상품명</th>
+            <th>수량</th>
+            <th>구매시간</th>
+            <th>이동</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>{{ order[0] }}</td>
+            <td>{{ order[1] }}</td>
+            <td>{{ order[2] }}</td>
+            <td>{{ order[3] }}</td>
+            <td><a class="go" href="/{{server_id}}/{{order[0]}}">구매한 주소로 이동하기</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

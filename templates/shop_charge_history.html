@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ shop[0] if shop and shop[0] else "VENDIX SHOP" }} - 충전내역</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.ico') }}" />
+  <style>
+    body { margin: 0; font-family: "Segoe UI", "Noto Sans KR", sans-serif; background: linear-gradient(180deg, #f8fbff, #eef4ff); color: #0f172a; word-break: keep-all; overflow-wrap: anywhere; }
+    .wrap { width: min(980px, 94vw); margin: 32px auto; }
+    .card { background: #fff; border: 1px solid #dbe4f0; border-radius: 16px; box-shadow: 0 10px 26px rgba(15, 23, 42, .08); padding: 20px; }
+    .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px; }
+    .btn { border: 0; border-radius: 10px; padding: 10px 14px; font-weight: 700; text-decoration: none; color: #fff; background: #475569; }
+    .table-wrap { width: 100%; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid #e2e8f0; padding: 12px 8px; text-align: left; }
+    th { color: #334155; font-size: 13px; }
+    .empty { color: #64748b; padding: 16px 8px; }
+    @media (max-width: 768px) {
+      .wrap { width:94vw; margin:14px auto; }
+      .card { padding:14px; border-radius:12px; }
+      .top { flex-wrap: wrap; gap: 8px; }
+      .top h1 { font-size: 21px !important; }
+      .btn { font-size: 12px; padding: 8px 10px; }
+      table { min-width: 560px; }
+      th, td { font-size: 12px; padding: 9px 6px; white-space: nowrap; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="top">
+        <h1 style="margin:0; font-size:24px;">충전내역</h1>
+        <a class="btn" href="/{{server_id}}">상점으로 돌아가기</a>
+      </div>
+      <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>시간</th>
+            <th>닉네임</th>
+            <th>충전 수단</th>
+            <th>금액</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if charge_logs %}
+            {% for row in charge_logs %}
+            <tr>
+              <td>{{ row[2] }}</td>
+              <td>{{ row[3] }}</td>
+              <td>{{ row[0] }}</td>
+              <td>{{ row[1] }}원</td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td class="empty" colspan="4">충전내역이 없습니다.</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

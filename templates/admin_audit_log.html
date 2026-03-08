@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>VENDIX - 감사 로그</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/vendix-theme.css') }}">
+  <script src="{{ url_for('static', filename='js/vendix-theme.js') }}"></script>
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.ico') }}" />
+  <script>
+    function logout_button() {
+      Swal.fire({
+        title: '로그아웃',
+        text: '정말로 로그아웃하시겠습니까?',
+        icon: 'question',
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+        confirmButtonColor: '#009900',
+        confirmButtonText: '확인',
+        cancelButtonText: '취소'
+      }).then((result) => {
+        if (result.isConfirmed) window.location.href = '/logout';
+      });
+    }
+
+    $(document).ready(function () {
+      $.extend($.fn.dataTable.defaults, {
+        language: { url: "{{ url_for('static', filename='js/korean.json') }}" }
+      });
+      $("#table").DataTable({ order: [[0, "desc"]] });
+    });
+  </script>
+</head>
+<body class="vendix-panel">
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #232329;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/setting" style="color: whitesmoke;">VENDIX</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon custom-toggler"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin-left: auto; margin-right: auto; text-align: center;">
+          <li class="nav-item"><a class="nav-link active" href="/setting" style="color: whitesmoke;">기본 설정</a></li>&nbsp;&nbsp;
+          <li class="nav-item"><a class="nav-link active" href="/manage_user" style="color: whitesmoke;">유저 관리</a></li>&nbsp;&nbsp;
+          <li class="nav-item"><a class="nav-link active" href="/manage_product" style="color: whitesmoke;">제품 관리</a></li>&nbsp;&nbsp;
+          <li class="nav-item"><a class="nav-link active" href="/buy_log" style="color: whitesmoke;">구매 로그</a></li>&nbsp;&nbsp;
+          <li class="nav-item"><a class="nav-link active" href="/charge_log" style="color: whitesmoke;">충전 로그</a></li>&nbsp;&nbsp;
+          <li class="nav-item"><a class="nav-link active" href="/managereq" style="color: whitesmoke;">충전 신청 관리</a></li>&nbsp;&nbsp;
+          <li class="nav-item"><a class="nav-link active" href="/license" style="color: whitesmoke;">라이센스 관리</a></li>&nbsp;&nbsp;
+          <li class="nav-item"><a class="nav-link active" href="/audit_log" style="color: whitesmoke;">감사 로그</a></li>&nbsp;&nbsp;
+          <li class="nav-item"><a class="nav-link active" href="#" onclick="logout_button();" id="logout">로그아웃</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5" style="background-color: white;">
+    <div class="card-body" style="background-color: white;">
+      <table id="table" class="table table-bordered">
+        <thead>
+          <tr>
+            <th>시간</th>
+            <th>관리자</th>
+            <th>액션</th>
+            <th>대상</th>
+            <th>이전값</th>
+            <th>변경값</th>
+            <th>IP</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in logs %}
+          <tr>
+            <td>{{ row[7] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td><pre style="white-space:pre-wrap; margin:0;">{{ row[4] }}</pre></td>
+            <td><pre style="white-space:pre-wrap; margin:0;">{{ row[5] }}</pre></td>
+            <td>{{ row[6] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
