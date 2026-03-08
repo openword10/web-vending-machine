@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ shop[0] if shop and shop[0] else "VENDIX SHOP" }} 회원가입</title>
-  <link rel="icon" href="{{ url_for('static', filename='img/logo.ico') }}" />
+  <link rel="icon" href="{{ url_for('static', filename='img/vendix-v.svg') }}" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <style>
@@ -28,49 +28,34 @@
       padding: 28px;
       box-shadow: 0 24px 60px rgba(15, 23, 42, 0.15);
     }
-    h1 {
-      margin: 0 0 4px;
-      font-size: 30px;
-      font-weight: 800;
-    }
-    .sub {
-      margin: 0 0 18px;
-      color: #475569;
-      font-size: 14px;
-    }
+    .title-row { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
+    .shop-logo { width:42px; height:42px; border-radius:999px; object-fit:cover; border:2px solid #d1d5db; background:#e5e7eb; }
+    h1 { margin:0; font-size:30px; font-weight:800; }
+    .sub { margin:0 0 18px; color:#475569; font-size:14px; }
     .input {
-      width: 100%;
-      box-sizing: border-box;
-      border: 1px solid #cbd5e1;
-      border-radius: 12px;
-      padding: 13px 14px;
-      margin: 0 0 10px;
-      font-size: 15px;
-      color: #0f172a;
-      background: #ffffff;
+      width:100%;
+      box-sizing:border-box;
+      border:1px solid #cbd5e1;
+      border-radius:12px;
+      padding:13px 14px;
+      margin:0 0 10px;
+      font-size:15px;
+      color:#0f172a;
+      background:#ffffff;
     }
     .btn {
-      width: 100%;
-      border: 0;
-      border-radius: 12px;
-      padding: 13px 14px;
-      background: linear-gradient(135deg, #0f766e, #0ea5e9);
-      color: #ffffff;
-      font-weight: 800;
-      cursor: pointer;
-      margin-top: 4px;
+      width:100%;
+      border:0;
+      border-radius:12px;
+      padding:13px 14px;
+      background:linear-gradient(135deg, #0f766e, #0ea5e9);
+      color:#ffffff;
+      font-weight:800;
+      cursor:pointer;
+      margin-top:4px;
     }
-    .link {
-      margin-top: 12px;
-      text-align: center;
-      font-size: 14px;
-      color: #334155;
-    }
-    .link a {
-      color: #2563eb;
-      text-decoration: none;
-      font-weight: 700;
-    }
+    .link { margin-top:12px; text-align:center; font-size:14px; color:#334155; }
+    .link a { color:#2563eb; text-decoration:none; font-weight:700; }
   </style>
   <script>
     function signup(serverId) {
@@ -91,7 +76,14 @@
 </head>
 <body>
   <main class="shell">
-    <h1>{{ shop[0] if shop and shop[0] else "VENDIX SHOP" }}</h1>
+    <div class="title-row">
+      {% if shop and shop|length > 3 and shop[3] %}
+      <img class="shop-logo" src="{{ shop[3] }}" alt="샵 로고">
+      {% else %}
+      <div class="shop-logo"></div>
+      {% endif %}
+      <h1>{{ shop[0] if shop and shop[0] else "VENDIX SHOP" }}</h1>
+    </div>
     <p class="sub">상점 회원가입</p>
     <input id="member_id" class="input" type="text" placeholder="ID">
     <input id="member_pw" class="input" type="password" placeholder="비밀번호">

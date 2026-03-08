@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/vendix-theme.css') }}">
   <script src="{{ url_for('static', filename='js/vendix-theme.js') }}"></script>
-  <link rel="icon" href="{{ url_for('static', filename='img/logo.ico') }}" />
+  <link rel="icon" href="{{ url_for('static', filename='img/vendix-v.svg') }}" />
   <style>
     @font-face {
       font-family: 'ONE-Mobile-POP';
@@ -29,18 +29,7 @@
       font-style: normal;
     }
     body { background: #141418; }
-    a { font-family: 'ONE-Mobile-POP'; font-size: 18px; }
-    body.vendix-panel .navbar-brand,
-    body.vendix-panel .navbar .nav-link {
-      font-family: 'ONE-Mobile-POP', 'Segoe UI', 'Noto Sans KR', sans-serif !important;
-      font-weight: 800 !important;
-      font-size: 18px !important;
-      letter-spacing: 0 !important;
-    }
     #logout { color: red; }
-    .table, .table td, .table th, .dataTables_wrapper { font-family: 'KOHIBaeumOTF', 'Segoe UI', sans-serif !important; }
-    .table td { font-weight: 700; }
-    .table th { font-weight: 800; }
   </style>
   <script>
     function logout_button() {

@@ -341,6 +341,80 @@ def get_shop_info(cur):
     return shop
 
 
+def _table_exists(cur, table_name):
+    cur.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name = ? LIMIT 1;", (table_name,))
+    return cur.fetchone() is not None
+
+
+def compute_admin_kpi(cur):
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
+    kpi = {
+        "daily_sales": 0,
+        "charge_approve_rate": 0.0,
+        "blocked_users": 0,
+        "top_product_name": "-",
+        "top_product_qty": 0,
+        "kpi_date": today,
+    }
+
+    if _table_exists(cur, "buylog") and _table_exists(cur, "product"):
+        cur.execute(
+            """
+            SELECT COALESCE(SUM(COALESCE(p.money, 0) * COALESCE(b.quantity, 1)), 0)
+            FROM buylog b
+            LEFT JOIN product p ON p.name = b.product_name
+            WHERE substr(COALESCE(b.created_at, ''), 1, 10) = ?;
+            """,
+            (today,),
+        )
+        row = cur.fetchone()
+        kpi["daily_sales"] = int(row[0] or 0) if row else 0
+
+        cur.execute(
+            """
+            SELECT b.product_name, COALESCE(SUM(COALESCE(b.quantity, 1)), 0) AS qty_sum
+            FROM buylog b
+            WHERE substr(COALESCE(b.created_at, ''), 1, 10) = ?
+            GROUP BY b.product_name
+            ORDER BY qty_sum DESC, b.product_name ASC
+            LIMIT 1;
+            """,
+            (today,),
+        )
+        top_row = cur.fetchone()
+        if top_row is not None:
+            kpi["top_product_name"] = str(top_row[0] or "-")
+            kpi["top_product_qty"] = int(top_row[1] or 0)
+
+    if _table_exists(cur, "user"):
+        cur.execute("SELECT COALESCE(COUNT(*), 0) FROM user WHERE CAST(COALESCE(ban, 0) AS INTEGER) = 1;")
+        row = cur.fetchone()
+        kpi["blocked_users"] = int(row[0] or 0) if row else 0
+
+    pending_today = 0
+    approved_today = 0
+    if _table_exists(cur, "chargereq"):
+        cur.execute(
+            "SELECT COALESCE(COUNT(*), 0) FROM chargereq WHERE substr(COALESCE(created_at, ''), 1, 10) = ?;",
+            (today,),
+        )
+        row = cur.fetchone()
+        pending_today = int(row[0] or 0) if row else 0
+    if _table_exists(cur, "chargelog"):
+        cur.execute(
+            "SELECT COALESCE(COUNT(*), 0) FROM chargelog WHERE substr(COALESCE(created_at, ''), 1, 10) = ?;",
+            (today,),
+        )
+        row = cur.fetchone()
+        approved_today = int(row[0] or 0) if row else 0
+
+    total_review_base = pending_today + approved_today
+    if total_review_base > 0:
+        kpi["charge_approve_rate"] = round((approved_today / total_review_base) * 100, 1)
+
+    return kpi
+
+
 def _normalize_digits(text):
     return re.sub(r"[^0-9]", "", str(text or ""))
 
@@ -769,8 +843,17 @@ def setting():
             cur.execute("SELECT * FROM webhook")
             webhook = cur.fetchone()
             shop = get_shop_info(cur)
+            kpi = compute_admin_kpi(cur)
             con.close()
-            return render_template("manage.html", info=serverinfo, webhook=webhook, shop=shop, shop_url=f"/{serverinfo[0]}", license_expired=license_expired)
+            return render_template(
+                "manage.html",
+                info=serverinfo,
+                webhook=webhook,
+                shop=shop,
+                shop_url=f"/{serverinfo[0]}",
+                license_expired=license_expired,
+                kpi=kpi,
+            )
         else:
             return redirect(url_for("login"))
     else:
